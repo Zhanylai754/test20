@@ -1,0 +1,1294 @@
+﻿<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<meta charset="utf-8" />
+
+	<style id="general-style">
+		@import url(fonts/all.css);
+
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			outline: none;
+		}
+
+			*::selection {
+				background-color: #000;
+				color: #ccc;
+			}
+
+		html, body, main {
+			min-width: 1200px;
+			overflow-x: hidden;
+			font-family: 'MailSans';
+			font-size: 20px;
+			color: #2c2d2e;
+			background-color: #e7e7e9;
+			scroll-behavior: smooth;
+		}
+
+		img {
+			display: block;
+			width: 100%;
+			object-fit: contain;
+			object-position: center;
+		}
+
+		ul, ol {
+			list-style: none inside
+		}
+
+		.left {
+			float: left
+		}
+
+		.right {
+			float: right
+		}
+
+		h2 {
+			font-size: 4rem;
+			font-weight: 600;
+			line-height: 1em;
+		}
+
+		p, figcaption {
+			margin: 2rem 0;
+			font-weight: normal;
+			font-size: 0.9rem;
+			line-height: 1.5em;
+		}
+	</style>
+
+	<style id="buttons-style">
+		.button {
+			display: inline-block;
+			padding: 0.75rem 1.5rem;
+			border-radius: 0.5rem;
+			font-size: 0.9rem;
+			font-weight: 500;
+			text-align: center;
+			text-decoration: none;
+			background-color: #005ff9;
+			color: #fff;
+			cursor: pointer;
+		}
+
+			.button.close,
+			.button.prev,
+			.button.next {
+				width: 2rem;
+				height: 2rem;
+				padding: 0;
+				border-radius: 100%;
+				font-family: 'Wingdings';
+				line-height: 2.1rem;
+			}
+
+			.button + .button {
+				margin-left: 0.5rem;
+			}
+
+			.button:hover {
+				background-color: #0052D6;
+			}
+	</style>
+
+	<style id="segment-style">
+		.segments {
+			padding: 5%;
+		}
+
+		.segment,
+		.segment-header {
+			overflow: hidden
+		}
+
+		.segment-header-content,
+		.segment-image {
+			width: calc((100% - 2rem) / 2)
+		}
+
+		.segment-header-content {
+			padding-top: 5%;
+		}
+	</style>
+
+	<style id="balloons-style">
+		.balloon-list {
+			overflow: hidden;
+			text-align: right;
+		}
+
+		.balloon-column {
+			width: calc(100% / 3);
+			float: left;
+			padding: 1rem;
+		}
+
+			.balloon-column.down-5 {
+				margin-top: 5%;
+			}
+
+		.balloon {
+			padding: 2rem;
+			border-radius: 2rem;
+			box-shadow: 0 0.25rem 1rem -0.5rem black;
+			cursor: pointer;
+		}
+
+			.balloon + .balloon {
+				margin-top: 2rem;
+			}
+
+			.balloon.white {
+				background-color: #fff;
+				color: #2c2d2e;
+			}
+
+			.balloon.black {
+				background-color: #2c2d2e;
+				color: #fff;
+			}
+
+			.balloon.blue {
+				background-color: #005ff9;
+				color: #fff;
+			}
+
+			.balloon.green {
+				background-color: #a5f469;
+				color: #2c2d2e;
+			}
+
+			.balloon span {
+				display: block;
+			}
+
+		.balloon-title,
+		.balloon-link {
+			font-weight: 500;
+		}
+
+		.balloon-subtitle,
+		.balloon-link {
+			font-size: 0.85rem;
+			line-height: 1rem;
+		}
+
+		.balloon-title {
+			overflow: hidden;
+			margin-top: 1rem;
+			font-size: 1.5rem;
+		}
+
+		.balloon-link {
+			margin-top: 30%;
+		}
+
+		.balloon-image {
+			width: 50%;
+			min-width: 8rem;
+			margin: 0 0 -1rem -3rem;
+		}
+	</style>
+
+	<style id="article-style">
+		article,
+		.article-navigator,
+		.article-section {
+			overflow: hidden;
+			clear: both;
+		}
+
+		article {
+			padding: 0 5% 5% 5%;
+			box-shadow: 0 0 3rem -1rem rgba(0,0,0,0.5);
+			background-color: #fff;
+		}
+
+			article h2 {
+				text-align: center;
+			}
+
+		.article-navigator,
+		.article-part,
+		.article-preview:nth-of-type(n+3) {
+			margin-top: 5%;
+		}
+
+		.article-preview {
+			float: left;
+			width: calc((100% - 5%) / 2);
+		}
+
+			.article-preview:nth-of-type(odd) {
+				clear: left;
+			}
+
+			.article-preview:nth-of-type(even) {
+				margin-left: 5%;
+			}
+
+		.article-part {
+			display: none;
+			clear: both;
+			padding: 2rem;
+			border-radius: 2rem;
+			box-shadow: inset 0 0 1rem 0 black;
+			background-color: #2c2d2e;
+			color: #fff;
+		}
+
+			.article-part:target {
+				display: block;
+			}
+
+			.article-part ::selection {
+				background-color: #ccc;
+				color: #000;
+			}
+
+			.article-part > .button.close {
+				float: right;
+			}
+
+				.article-part > .button.close + .article-section {
+					clear: left;
+				}
+
+		.article-seperator {
+			height: 1px;
+			border: none;
+			border-top: 1px dashed #fff;
+			margin: 2rem 0;
+		}
+
+		.article-preview-header {
+			margin-bottom: 1rem;
+		}
+
+		.article-section-header {
+			margin-bottom: 2rem;
+		}
+
+		.article-section-title,
+		.article-preview-title {
+			font-size: 1.5rem;
+			font-weight: 500;
+			line-height: 2rem;
+		}
+
+		.article-section .left,
+		.article-section .right {
+			width: calc(50% - 1rem);
+		}
+
+		.article-section p {
+			margin: 1rem 0;
+		}
+
+		.article-part-footer {
+			text-align: center;
+		}
+
+		.article-image {
+			border-radius: 1rem;
+		}
+
+		.figure-duet {
+			overflow: hidden;
+			clear: both;
+		}
+
+			.figure-duet figcaption {
+				margin-top: 1rem;
+				text-align: center;
+			}
+
+			.figure-duet > .article-figure {
+				float: left;
+				width: calc((100% - 2rem) / 2);
+			}
+
+				.figure-duet > .article-figure:nth-of-type(even) {
+					float: right;
+				}
+
+				.figure-duet > .article-figure:nth-of-type(odd) {
+					margin-left: 0;
+					clear: left;
+				}
+
+				.figure-duet > .article-figure:nth-of-type(n+3) {
+					padding-top: 2rem;
+					border-top: 1px dotted #999;
+				}
+
+		.article-figure {
+			overflow: hidden;
+		}
+	</style>
+
+	<style id="footer-style">
+		.page-footer {
+			padding: 3rem 5%;
+		}
+
+		.footer-navigator,
+		.footer-links {
+			overflow: hidden
+		}
+
+		.footer-logo {
+			width: auto;
+			height: 2rem;
+			float: left;
+		}
+
+		.footer-links {
+			float: right;
+		}
+
+		.footer-link {
+			float: left;
+			height: 2rem;
+			font-size: 1rem;
+			font-weight: 500;
+			line-height: 2rem;
+			color: #666;
+			cursor: pointer;
+		}
+
+			.footer-link + .footer-link {
+				margin-left: 1rem;
+			}
+
+			.footer-link:hover {
+				color: #2c2d2e;
+			}
+	</style>
+
+	<title>Paradigm</title>
+</head>
+<body>
+<main>
+
+<section class="segments">
+
+	<section class="segment">
+		<header class="segment-header">
+			<div class="segment-header-content left">
+				<h2 class="segment-title">Делаем дизайн для людей</h2>
+				<p class="segment-preumble">В Mail.ru мы создаём пользовательский опыт для самых разных проектов и стараемся сделать интернет немного лучше.</p>
+				<div class="button">Узнать больше</div>
+			</div>
+			<img class="segment-image right" src="img/about-img.svg" />
+		</header>
+	</section>
+
+	<section class="segment">
+		<header class="segment-header">
+			<div class="segment-header-content left">
+				<h2 class="segment-title">Проводим дизайн-мероприятия</h2>
+				<p class="segment-preumble">Подпишитесь на нас в социальных сетях, чтобы первыми узнавать о всех мероприятиях и активностях.</p>
+			</div>
+		</header>
+		<ul class="balloon-list">
+			<li class="balloon-column">
+				<div class="balloon black">
+					<span class="balloon-subtitle">Апрель</span>
+					<span class="balloon-title">Дизайн голосовых интерфейсов</span>
+					<span class="balloon-link">Подробнее</span>
+				</div>
+				<div class="balloon white">
+					<span class="balloon-subtitle">Ноябрь</span>
+					<span class="balloon-title">Russian Design Cup 2021</span>
+					<span class="balloon-link">Подробнее</span>
+				</div>
+			</li>
+			<li class="balloon-column down-5">
+				<div class="balloon blue">
+					<span class="balloon-subtitle">Август</span>
+					<span class="balloon-title">Mail Design Conferece & Dribble Meetup 2021</span>
+					<span class="balloon-link">Подробнее</span>
+				</div>
+			</li>
+			<li class="balloon-column">
+				<div class="balloon green">
+					<span class="balloon-subtitle">Март</span>
+					<span class="balloon-title">Mail Design Friends: инклюзивный дизайн</span>
+					<span class="balloon-link">Подробнее</span>
+				</div>
+				<div class="balloon black">
+					<span class="balloon-subtitle">Декабрь</span>
+					<span class="balloon-title">Фестиваль креативных индустрий G8</span>
+					<span class="balloon-link">Подробнее</span>
+				</div>
+			</li>
+		</ul>
+	</section>
+
+	<section class="segment">
+		<header class="segment-header">
+			<div class="segment-header-content right">
+				<h2 class="segment-title">Развиваем дизайн-систему</h2>
+				<p class="segment-preumble">Создание десятков продуктов в одной экосистеме невозможно без дизайн-системы. Здесь можно подробнее почитать про наши гайдлайны и техническую реализацию.</p>
+				<div class="button">Дизайн-система</div>
+			</div>
+			<img class="segment-image left" src="img/system-img.svg" />
+		</header>
+		<ul class="balloon-list">
+			<li class="balloon-column down-5">
+				<div class="balloon green">
+					<img class="balloon-image" src="img/logo-language.svg" />
+					<span class="balloon-subtitle">Paradigm 2.0</span>
+					<span class="balloon-title">Визуальный язык</span>
+				</div>
+				<div class="balloon white">
+					<img class="balloon-image" src="img/logo-logo.svg" />
+					<span class="balloon-subtitle">Paradigm 2.0</span>
+					<span class="balloon-title">Логотипы продуктов</span>
+				</div>
+			</li>
+			<li class="balloon-column">
+				<div class="balloon white">
+					<img class="balloon-image" src="img/logo-brand.svg" />
+					<span class="balloon-subtitle">Paradigm 2.0</span>
+					<span class="balloon-title">Брендбук</span>
+				</div>
+				<div class="balloon black">
+					<img class="balloon-image" src="img/logo-component.svg" />
+					<span class="balloon-subtitle">Paradigm 2.0</span>
+					<span class="balloon-title">Компоненты в коде</span>
+				</div>
+			</li>
+			<li class="balloon-column down-5">
+				<div class="balloon black">
+					<img class="balloon-image" src="img/logo-texts.svg" />
+					<span class="balloon-subtitle">Paradigm 2.0</span>
+					<span class="balloon-title">Работа с текстом</span>
+				</div>
+			</li>
+		</ul>
+	</section>
+
+	<section class="segment">
+		<header class="segment-header">
+			<div class="segment-header-content left">
+				<h2 class="segment-title">Исследуем наши продукты</h2>
+				<p class="segment-preumble">Сейчас в нашей лаборатории более 20 исследователей, которые работают над десятками продуктов. Вы можете почитать больше про наши исследования в блоге.</p>
+				<div class="button">Узнать больше</div>
+			</div>
+			<img class="segment-image right" src="img/ux-img.svg" />
+		</header>
+	</section>
+
+	<section class="segment">
+		<header class="segment-header">
+			<div class="segment-header-content right">
+				<h2 class="segment-title">Собираем лучшую команду</h2>
+				<p class="segment-preumble">Для нас дизайн &ndash; это в первую очередь люди. Именно люди принимают решения, определяют ценности и культуру. Мы верим, что работа должна приносить удовольствие, стремимся создать все условия для этого и быть открытыми к новому.</p>
+				<div class="button">Наши вакансии</div>
+			</div>
+			<img class="segment-image left" src="img/team-img.svg" />
+		</header>
+		<ul class="balloon-list">
+			<li class="balloon-column down-5">
+				<div class="balloon black">
+					<span class="balloon-subtitle">Вакансия</span>
+					<span class="balloon-title">Дизайнер продукта в Марусю</span>
+					<span class="balloon-link">Подробнее</span>
+				</div>
+			</li>
+			<li class="balloon-column">
+				<div class="balloon blue">
+					<span class="balloon-subtitle">Вакансия</span>
+					<span class="balloon-title">Дизайнер продукта в Почту</span>
+					<span class="balloon-link">Подробнее</span>
+				</div>
+			</li>
+			<li class="balloon-column down-5">
+				<div class="balloon white">
+					<span class="balloon-subtitle">Вакансия</span>
+					<span class="balloon-title">Дизайнер продукта в Мессенджеры</span>
+					<span class="balloon-link">Подробнее</span>
+				</div>
+			</li>
+		</ul>
+	</section>
+</section>
+
+<article>
+	<img class="article-image" src="img/paradigm.svg" style="margin: 0" alt="Paradigm 2.0 Logo" />
+	<section class="article-section">
+		<header>
+			<h2>Основа визуального языка</h2>
+		</header>
+		<p style="text-align: justify; text-align-last: center">
+			Визуальный язык &ndash; это способ коммуникации бренда в интерфейсе наших продуктов.
+			Мы стремимся, чтобы приёмы визуального языка использовались сознательно, создавали дополнительную ценность, поддерживали прямую ассоциацию с брендом Mail.ru и не мешали использованию продукта.
+			Paradigm — это дизайн-система продуктов Mail.ru, которая помогает нам поддерживать целостность их пользовательского опыта и оптимизировать ресурсы дизайна и разработки.
+		</p>
+	</section>
+
+	<nav class="article-navigator" id="article">
+
+		<section class="article-preview">
+			<header class="article-preview-header">
+				<h4 class="article-preview-title">Структура интерфейса</h4>
+			</header>
+			<figure class="article-preview-figute">
+				<img class="article-image" src="img/figure-01.png" />
+				<figcaption class="article-preview-figcaption">Лэйаут и сетка помогают пользователю понять иерархию интерфейса. Помимо структурирующей, лэйаут выполняет и утилитарную функцию &ndash; стандартизирует основные компоненты продуктов, задаёт единый визуальный ритм.</figcaption>
+			</figure>
+			<a class="button" href="#section-interface">Подробнее</a>
+		</section>
+
+		<section class="article-preview">
+			<header class="article-preview-header">
+				<h4 class="article-preview-title">Типографика</h4>
+			</header>
+			<figure class="article-preview-figute">
+				<img class="article-image" src="img/figure-02.png" />
+				<figcaption>Типографика и фирменный шрифт помогают считывать смысл сообщения и делают бренд узнаваемым. Ключевой элемент брендинга наших продуктов — корпоративный шрифт Mail Sans.</figcaption>
+			</figure>
+			<a class="button" href="#section-typography">Подробнее</a>
+		</section>
+
+		<section class="article-preview">
+			<header class="article-preview-header">
+				<h4 class="article-preview-title">Палитра</h4>
+			</header>
+			<figure class="article-preview-figute">
+				<img class="article-image" src="img/figure-03.png" />
+				<figcaption>С помощью цвета дизайнеры создают структуру, управляют акцентами, предупреждают о важных действиях и кодируют контент. Чтобы палитра была идентична во всех продуктах, мы используем дизайн-токены.</figcaption>
+			</figure>
+			<a class="button" href="#section-palette">Подробнее</a>
+		</section>
+
+		<section class="article-preview">
+			<header class="article-preview-header">
+				<h4 class="article-preview-title">Иконографика</h4>
+			</header>
+			<figure class="article-preview-figute">
+				<img class="article-image" src="img/figure-04.png" />
+				<figcaption>Пиктограммы помогают сохранить узнаваемость продуктов. Иконки Paradigm четкие, минималистичные и единообразные для разных платформ.</figcaption>
+			</figure>
+			<a class="button" href="#section-iconography">Подробнее</a>
+		</section>
+
+		<section class="article-preview">
+			<header class="article-preview-header">
+				<h4 class="article-preview-title">Эффекты</h4>
+			</header>
+			<figure class="article-preview-figute">
+				<img class="article-image" src="img/figure-05.png" />
+				<figcaption>Визуальные эффекты в интерфейсе нужны не только для красоты — они делают продукт понятнее и снижают когнитивную нагрузку. Важно применять эффекты осмысленно и не использовать там, где от них нет пользы.</figcaption>
+			</figure>
+			<a class="button" href="#section-effects">Подробнее</a>
+		</section>
+
+		<section class="article-preview">
+			<header class="article-preview-header">
+				<h4 class="article-preview-title">Бренд</h4>
+			</header>
+			<figure class="article-preview-figute">
+				<img class="article-image" src="img/figure-06.png" />
+				<figcaption>Бренд — это цифровая личность наших продуктов. Мы соблюдаем его константы — логотип и палитру — и свободно работаем с визуальным языком в коммуникациях, рекламных кампаниях и спецпроектах.</figcaption>
+			</figure>
+			<a class="button" href="#section-brand">Подробнее</a>
+		</section>
+
+	</nav>
+
+	<section class="article-part" id="section-interface">
+		<a href="#article" class="button close">û</a>
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Консистентность</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-01-01.png" />
+				<figcaption class="right">Мы используем одинаковую структуру интерфейса внутри групп продуктивити и медиа. Для построения размерностей в интерфейсе мы используем сетку 4dp. Единый модуль сетки необходим для поддержания общей логики в создании макетов и их разработке.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Информационные слои</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-01-02.png" />
+				<figcaption class="left">Элементы интерфейса имеют разное назначение или находятся на разных уровнях смысловой иерархии. Мы разделяем их на информационные слои. Информационные слои плоские, но имеют глубину относительно друг друга. Это позволяет быстрее разобраться в иерархии и функциях элементов интерфейса.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Воздух в структуре макета</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-03.png" />
+					<figcaption>Воздух помогает считать информацию</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-04.png" />
+					<figcaption>Интерфейс слишком зажат</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-05.png" />
+					<figcaption>Структура интерфейса хорошо считывается благодаря воздуху</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-06.png" />
+					<figcaption>Колонки слипаются, из-за чего рушится иерархия лэйаута</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Разделители в структуре макета</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-04.png" />
+					<figcaption>Иерархия элементов поддерживается благодаря воздуху</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-07.png" />
+					<figcaption>Разделители усложняют восприятие списка</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-08.png" />
+					<figcaption>Форма хорошо структурирована</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-09.png" />
+					<figcaption>Разделители без необходимости увеличивают высоту</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-05.png" />
+					<figcaption>Структура интерфейса хорошо считывается благодаря воздуху</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-10.png" />
+					<figcaption>Разделители не помогают ориентироваться в интефрейсе, а только делают его «зажатым»</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-11.png" />
+					<figcaption>Структура интерфейса хорошо считывается благодаря воздуху</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-01-12.png" />
+					<figcaption>Без разделителей элементы списка разваливаются, и сканирование списка писем усложняется</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Адаптивность</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-01-13.gif" />
+				<figcaption class="right">В зависимости от типа продукта мы используем два подхода к адаптивности. Используем в продуктах со сложным визуальным представлением, где важно гарантировать аккуратность, например, в Медиапроектах. Медиапроекты используют сетку с модулем 20dp. По краям экрана заложен минимальный отступ 20dp, а также пространство под полосу прокрутки 20dp.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">100% экрана</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-01-14.gif" />
+				<figcaption class="left">Используем в продуктах, где важно использовать всё экранное пространство: например, в Почте, Облаке, Календаре. Для этого типа лейаута мы рекомендуем использовать структурную сетку, чтобы поддерживать ритм и стандартный модуль в 4dp для определения размерностей.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Комбинирование адаптивности</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-01-15.gif" />
+				<figcaption class="right">По необходимости можно комбинировать разные подходы к адаптивности.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Размерности</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-01-16.png" />
+				<figcaption class="left">У каждого проекта есть несколько типов сеток, к которым привязаны изменения в контролах и стилях типографики.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<footer class="article-part-footer">
+			<a href="#article" class="button close">û</a>
+			<a href="#section-typography" class="button next">à</a>
+		</footer>
+	</section>
+
+	<section class="article-part" id="section-typography">
+		<a href="#article" class="button close">û</a>
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Mail Sans</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-02-01.png" />
+				<figcaption class="right">Mail Sans — фирменный шрифт и ключевой элемент брендинга наших продуктов. В интерфейсах мы рекомендуем использовать его в заголовках, промоэлементах и навигации.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Дополнительные шрифты</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-02-02.png" />
+				<figcaption class="left">Дополнительный акцидентный шрифт медиапроектов для интерфейсов. Также используется для акциденции в коммуникации группы компаний Mail.ru.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Helvetica Neue</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-02-03.png" />
+				<figcaption class="right">Это переработанный шрифт с более структурно унифицированным набором высоты и ширины. Другие изменения включают улучшенную читаемость, более толстые знаки препинания и увеличенный интервал между цифрами.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Arial</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-02-04.png" />
+				<figcaption class="right">Иногда продаваемый или отображаемый в программном обеспечении как Arial MT, представляет собой шрифт без засечек и набор компьютерных шрифтов в нео-гротескном стиле. Шрифты из семейства Arial поставляются со всеми версиями Microsoft Windows, начиная с Windows 3.1 и выше, некоторыми другими программными приложениями Microsoft.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">San Francisco</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-02-05.png" />
+				<figcaption class="right">Шрифт San Francisco имеет три основных варианта: SF для macOS, iOS и iPadOS; SF Compact для watchOS; и SF Mono для приложений Terminal, Console и Xcode. Существует несколько других вариантов для внутреннего использования Apple.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Inter</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-02-06.png" />
+				<figcaption class="right">Это шрифт, специально разработанный для пользовательских интерфейсов с акцентом на высокую четкость текста малого и среднего размера на экранах компьютеров. Семейство имеет высокую высоту x, чтобы облегчить чтение текста в смешанном и нижнем регистре.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Mail Sans + Inter</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-02-07.png" />
+				<figcaption class="left">Заголовок — Mail Sans в начертании Medium или Demibold. Наборный шрифт — Inter в начертании Regular. Эта шрифтовая пара подходит для любой платформы.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Mail Sans + Native Font</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-02-08.png" />
+				<figcaption class="left">Заголовок — Mail Sans в начертании Demibold. Наборный шрифт — системный: Arial для Windows, Helvetica Neue для Mac, San Francisco для iOS, Roboto для Android.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Выравнивание по горизотнтали</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-02-09.png" />
+					<figcaption>Левая выключка лучше всего подходит для чтения текста узких экранах</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-02-10.png" />
+					<figcaption>Правая выключка плохо подходит для чтения текста большого объема</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-02-11.png" />
+					<figcaption>Допустимо для небольших объемов текста и заголовков</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-02-12.png" />
+					<figcaption>Выключка по ширине усложняет чтение короткого текста</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Регистры</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-02-13.png" />
+					<figcaption>Капс не мешает читаемости интерфейса в маленьком формате</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-02-14.png" />
+					<figcaption>Не рекомендуется использовать капс в заголовках</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<footer class="article-part-footer">
+			<a href="#section-interface" class="button prev">ß</a>
+			<a href="#article" class="button close">û</a>
+			<a href="#section-palette" class="button next">à</a>
+		</footer>
+	</section>
+
+	<section class="article-part" id="section-palette">
+		<a href="#article" class="button close">û</a>
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Палитра бренда</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-03-01.png" />
+				<figcaption class="right">Палитра бренда помогает в узнаваемости продуктов Mail.ru. Она сохраняет преемственность в приёмах визуального языка и ассоциирует продукт с брендом компании.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Базовая палитра</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-03-02.png" />
+				<figcaption class="left">Базовую палитру используют для акцентов, управляющих элементов, состояний интерфейсов и  заливки фонов. Она состоит из акцентных цветов и палитры нейтрального серого. Убедитесь, что коэффициент контрастности текста не ниже 3.0. Чем крупнее кегль текста, тем ниже коэффициент контрастности. Исключение — логотипы или декоративные элементы и неактивные контролы. </figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Палитра серого</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-03-03.png" />
+				<figcaption class="right">Разница между нейтральным серым и тонированным проявляется в сочетании с другими цветами, хотя при первом взгляде не так заметна. Мы не рекомендуем использовать цвета с высоким параметром saturation в базовой палитре серых оттенков. Используйте специально подобранные оттенки из нашей библиотеки.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Использование в дизайне</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-03-04.png" />
+				<figcaption class="left">Дизайн-токены интегрированы в наши библиотеки компонентов и UI-киты. Они охватывают разные платформы, цветовые темы, состояния компонентов и многое другое. Название цветов и типографики в наших библиотеках в Figma соответствуют названию токена в репозитории. Это упрощает разработку: например, если изменить цвет в репозитории, он изменится в разных продуктах.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Тематизация</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-03-05.png" />
+				<figcaption class="right">Разные продукты используют свои темы оформления. Любая тема наследуется от базовой, но меняет значения некоторых переменных. Например, есть отдельные темы для продуктов productivity и media, но все они основаны на базовой теме. Такой подход помог в разработке темной темы интерфейса. Токены темной темы тонируют цветовые токены базовой темы.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<footer class="article-part-footer">
+			<a href="#section-typography" class="button prev">ß</a>
+			<a href="#article" class="button close">û</a>
+			<a href="#section-iconography" class="button next">à</a>
+		</footer>
+	</section>
+
+	<section class="article-part" id="section-iconography">
+		<a href="#article" class="button close">û</a>
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Стиль иконок</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-01.png" />
+					<figcaption>Залитые пиктограммы используются в вебе, где необходимо поддерживать корректный рендер на разных мониторах.</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-02.png" />
+					<figcaption>Линейные пиктограммы используются на мобильных устройствах, где разрешение экранов выше.</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Углы иконок</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-04-03.png" />
+				<figcaption class="right">По аналогии с нашим логотипом мы используем и мягкие, и острые скругления в форме пиктограмм и иконок.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Баланс иконок</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-04-04.png" />
+				<figcaption class="right">Иконки визуально сбалансированы, поэтому можно располагать несколько пиктограмм рядом друг с другом.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Размер и цвет</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-05.png" />
+					<figcaption>В нашей дизайн-системе все иконки для веб-версий сервисов отрисованы в размере 16 px. Они привязаны к пикселям и оптимизированы для этого размера.</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-06.png" />
+					<figcaption>Иконки Paradigm одноцветны. В иконках, как и в остальных местах интерфейса, мы используем цвета из дизайн-токенов, которые синхронизированы с библиотекой в Figma.</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Использование текста с иконками</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-07.png" />
+					<figcaption>Используйте иконки вместе с текстом</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-08.png" />
+					<figcaption>Иконка без подписи может быть непонятной</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Неизменный стиль иконки</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-09.png" />
+					<figcaption>Залитые иконки смотрятся аккуратно и гармонично</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-10.png" />
+					<figcaption>Измененные иконки смотрятся неопрятно</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Целенаправленное использование</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-11.png" />
+					<figcaption>Старайтесь не использовать иконки для украшения — это отвлекает от основного действия</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-04-12.png" />
+					<figcaption>Учитывайте окружающий контекст: когда иконки слишком близко расположены, они создают визуальный шум и путают</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Иллюстративные иконки</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-04-13.png" />
+				<figcaption class="right">В зависимости от композиции и задачи коммуникации иконки могут быть как плоскими или аутлайновыми, так и иллюстративными.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Плоские иконки</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-04-14.png" />
+				<figcaption class="left">Если иконки плоские, следует ориентироваться на правила из гайдлайна по иконографике. Допустимо комбинирование стилей, если в коммуникации это выглядит целостно.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<footer class="article-part-footer">
+			<a href="#section-palette" class="button prev">ß</a>
+			<a href="#article" class="button close">û</a>
+			<a href="#section-effects" class="button next">à</a>
+		</footer>
+	</section>
+
+	<section class="article-part" id="section-effects">
+		<a href="#article" class="button close">û</a>
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Тень</h3>
+			</header>
+			<p>Тень — самый простой способ показать визуальную иерархию. Один слой «приподнимается» над другим, что показывает их взаимоотношение и иерархию компонентов.</p>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Теневые акценты</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-05-01.png" />
+					<figcaption>Тень выделяет информационный слой</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-05-02.png" />
+					<figcaption>Интерфейс перегружен</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Простое затемнение</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-05-03.png" />
+				<figcaption class="right">Когда нужно сфокусировать внимание на одном интерфейсном блоке, используется затемнение. Есть три прозрачности для тонирования. Выбор прозрачности зависит от того, насколько нагружен интерфейс поверх затемнения.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Градиент для затемнения</h3>
+			</header>
+			<div class="figure-duet">
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-05-04.png" />
+					<figcaption>Затемнение картинки не усложняет интерфейс</figcaption>
+				</figure>
+				<figure class="article-figure">
+					<img class="article-image" src="img/figure-05-05.png" />
+					<figcaption>Дополнительная граница заливки усложняет интерфейс</figcaption>
+				</figure>
+			</div>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Цвет градиента для затеменения</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-05-06.png" />
+				<figcaption class="right">Рекомендуем создавать градиент не из оттенков чисто черного, а из холодного черного — #00060F.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Строение градиента</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-05-07.png" />
+				<figcaption class="left">Линейный градиент имеет характерные заломы. Поэтому рекомендуем использовать сглаженные градиенты — это сделает эффект более приятным на вид. В переходах между цветами тоже есть такой эффект, поэтому рекомендуем сглаживать градиенты.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Тонирование</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image left" src="img/figure-05-08.gif" />
+				<figcaption class="right">Тонирование элемента это стандартный приём фидбэка, а в качестве тонера мы используем цвет. У простых контролов вроде инпута также меняется цвет обводки.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Масштаб</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-05-09.gif" />
+				<figcaption class="left">Когда элемент используется не только для клика, но и является интерактивным элементом, рекомендуем использовать более явную визуальную отдачу.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<footer class="article-part-footer">
+			<a href="#section-iconography" class="button prev">ß</a>
+			<a href="#article" class="button close">û</a>
+			<a href="#section-brand" class="button next">à</a>
+		</footer>
+	</section>
+
+	<section class="article-part" id="section-brand">
+		<a href="#article" class="button close">û</a>
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Бренд</h3>
+			</header>
+			<p>Бренд — это цифровая личность наших продуктов. Мы соблюдаем его константы — логотип и палитру — и свободно работаем с визуальным языком в коммуникациях, рекламных кампаниях и спецпроектах.</p>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Фирменные цвета</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-06-01.png" />
+				<figcaption class="left">Основной фирменный цвет Mail.ru — электрический синий. Наравне с ним в продуктах используется белый цвет. Дополнительный цвет — фирменный оранжевый.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Построение логотипа</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-06-02.png" />
+				<figcaption class="left">Для соблюдения интервала между шрифтовой частью логотипа и знаком Mail.ru используется единица измерения i. Значение i соответствует ширине вертикального штриха в букве m. Логотип Mail.ru можно использовать на фирменной плашке или без неё. Основной единицей построения фирменной плашки является х, равный 1/4 ширины знака Mail.ru..</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Охранное поле логотипа</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-06-03.png" />
+				<figcaption class="left">Запрещено располагать элементы графики на охранном поле. Также охранное поле показывает минимально разрешенное расстояние расположения логотипа от края макета. Минимальное значение охранного поля логотипа должно равняться h. h является основой построения охранного поля логотипа и равно высоте знака Mail.ru.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Охранное поле логотипа на плашке</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-06-04.png" />
+				<figcaption class="left">Запрещено располагать на охранном поле элементы графики. Также охранное поле показывает минимально разрешенное расстояние расположения логотипа от края макета. Минимальное значение охранного поля логотипа должно равняться 2z. z является основой построения охранного поля логотипа и равно отступу от края плашки до знака Mail.ru.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Использование знака</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-06-05.png" />
+				<figcaption class="left">Знак может располагаться только на квадратной или круглой фирменной плашке. Когда знак используется без шрифтового написания, он всегда должен быть на подложке. Это правило распространяется как на мобильные и десктопные приложения, так и на веб-сервисы. Размер отступа внутри плашки зависит от диаметра внутреннего круга знака и равняется y.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<section class="article-section">
+			<header class="article-section-header">
+				<h3 class="article-section-title">Совместное использование с другими логотипами</h3>
+			</header>
+			<figure class="article-figure">
+				<img class="article-image right" src="img/figure-06-06.png" />
+				<figcaption class="left">При использовании логотипа Mail.ru рядом с другими логотипами необходимо соблюдать интервал равный 1,5h. Значение h равно ширине знака Mail.ru. Размер отступа внутри плашки зависит от диаметра внутреннего круга знака и равняется y.</figcaption>
+			</figure>
+		</section>
+		<hr class="article-seperator" />
+
+		<footer class="article-part-footer">
+			<a href="#section-effects" class="button prev">ß</a>
+			<a href="#article" class="button close">û</a>
+		</footer>
+	</section>
+
+</article>
+
+<footer class="page-footer">
+	<nav class="footer-navigator">
+		<img class="footer-logo" src="img/logo.svg" />
+		<ul class="footer-links">
+			<li class="footer-link">События</li>
+			<li class="footer-link">Дизайн-система</li>
+			<li class="footer-link">Исследования</li>
+			<li class="footer-link">Вакансии</li>
+			<li class="footer-link">Контакты</li>
+		</ul>
+	</nav>
+</footer>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,20 @@
+﻿@font-face {
+	font-family: 'MailSans';
+	font-weight: normal;
+	src: url('MailSansRegular.woff') format('woff');
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'MailSans';
+	font-weight: 500;
+	src: url('MailSansMedium.woff') format('woff');
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'MailSans';
+	font-weight: 600;
+	src: url('MailSansDemiBold.woff') format('woff');
+	font-style: normal;
+}
